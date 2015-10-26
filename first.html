@@ -73,7 +73,7 @@
 		            
 		            
 	        	}
-	        	//myTriangle.rotate(3, center);
+	        	myTriangle.rotate(3, center);
 	        	textOne.point = myTriangle.segments[0].point;
 	        	textTwo.point = myTriangle.segments[1].point;
 	        	textThree.point = myTriangle.segments[2].point;
@@ -86,6 +86,77 @@
 	        	isRotate = !isRotate;
 	        	currentFrame = 0;
 	        }
+
+	        var myTri = SymTri(new Point(400, 400), 50);
+	        function SymTri(centre, rad) {
+	        	this.center = centre;
+	        	this.radius = rad;
+	        	this.triangle = new Path();
+	        	for (i = 0; i < 3; i++) 
+	        	{
+					this.triangle.add(new Point(this.radius * Math.cos(Math.PI / 2 + (i * Math.PI * 2 / 3)) + this.center.x, this.radius * Math.sin(Math.PI / 2 + (i * Math.PI * 2 / 3)) + this.center.y));
+	        	}
+
+	        	this.textOne = new PointText(this.triangle.segments[0].point);
+		        this.textOne.content = "A";
+		        this.textOne.fillColor = 'blue';
+		        this.textOne.scale(3);
+		        this.textTwo = new PointText(this.triangle.segments[1].point);
+		        this.textTwo.content = "B";
+		        this.textTwo.fillColor = 'green';
+		    	this.textTwo.scale(3);
+		        this.textThree = new PointText(this.triangle.segments[2].point);
+		        this.textThree.content = "C";
+		        this.textThree.fillColor = 'black';
+		        this.textThree.scale(3);
+		 		this.triangle.closed = true;
+		        this.triangle.fillColor = 'red';
+
+		        this.lVertex = this.triangle.segments[2];
+		        this.rVertex = this.triangle.segments[1];
+		        this.botCenter = (this.triangle.segments[2].point.x + this.triangle.segments[1].point.x) / 2;
+		        this.halfBotLength = botCenter - this.triangle.segments[2].point.x;
+
+
+	       		this.isRotate = false;
+		        this.currentFrame;
+		       	this.toggle = false;
+
+		       	this.triangle.onFrame = function(event) {
+		       		if(isRotate) {
+	        		
+	         	        var increment = Math.PI/(60*speed); 
+	         	           
+	         	        if(toggle) {
+	         	        	var pointVal = Math.cos(increment*this.currentFrame);
+	         	        } else {
+	         	        	var pointVal = Math.cos(increment*this.currentFrame + Math.PI)
+	         	        }
+			            
+			            lVertex.point.x = pointVal * -this.halfBotLength + this.botCenter;
+			            rVertex.point.x = pointVal * this.halfBotLength + this.botCenter;
+
+			            currentFrame++;
+
+			            if(currentFrame >= 60*speed) {
+			            	this.isRotate = false;
+			            	this.toggle = !toggle;
+			            }
+
+		            
+		            
+		        	}
+		        	//this.triangle.rotate(3, center);
+		        	this.textOne.point = this.triangle.segments[0].point;
+		        	this.textTwo.point = this.triangle.segments[1].point;
+		        	this.textThree.point = this.triangle.segments[2].point;
+			       	}
+	        	}
+
+	        	this.triangle.onClick = function(event) {
+	        		this.isRotate = !isRotate;
+	        		this.currentFrame = 0;
+	        	}
 
 	        
 
