@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8">
+	<title> JavaScript Tut1 </title>
+	<body>
+		<link rel="stylesheet" href="css/style.css">
+		<script type="text/javascript" src="paperjs/dist/paper-full.js"></script>
+
+		<script type="text/paperscript" canvas="myCanvas">
+			var sym = "RFR";
+        	var radius = 400;
+	        var center = new Point(600, 800)
+	        var speed = 2;//num seconds for animation
+	        var circle = new Path.Circle(center, 60);
+	        circle.fillColor = 'black';
+
+	        var myTriangle = new Path();
+	        myTriangle.strokeColor = 'black';
+
+
+	        for (i = 0; i < 3; i++) 
+	        {
+				myTriangle.add(new Point(radius * Math.cos(Math.PI / 2 + (i * Math.PI * 2 / 3)) + center.x, radius * Math.sin(Math.PI / 2 + (i * Math.PI * 2 / 3)) + center.y));
+	        }
+
+	        var textOne = new PointText(myTriangle.segments[0].point);
+	        textOne.content = "A";
+	        textOne.fillColor = 'blue';
+	        textOne.scale(3);
+	        var textTwo = new PointText(myTriangle.segments[1].point);
+	        textTwo.content = "B";
+	        textTwo.fillColor = 'green';
+	    	textTwo.scale(3);
+	        var textThree = new PointText(myTriangle.segments[2].point);
+	        textThree.content = "C";
+	        textThree.fillColor = 'black';
+	        textThree.scale(3);
+	 		myTriangle.closed = true;
+	        myTriangle.fillColor = 'red';
+
+	        var lVertex = myTriangle.segments[2];
+	        var rVertex = myTriangle.segments[1];
+	        var botCenter = (myTriangle.segments[2].point.x + myTriangle.segments[1].point.x) / 2;
+	        var halfBotLength = botCenter - myTriangle.segments[2].point.x;
+
+
+       		var isRotate = false;
+	        var currentFrame;
+	       	var toggle = false;
+	        function onFrame(event)
+	        {
+	        	if(isRotate) {
+	        		
+         	        var increment = Math.PI/(60*speed); 
+         	           
+         	        if(toggle) {
+         	        	var pointVal = Math.cos(increment*currentFrame);
+         	        } else {
+         	        	var pointVal = Math.cos(increment*currentFrame + Math.PI)
+         	        }
+		            
+		            lVertex.point.x = pointVal * -halfBotLength + botCenter;
+		            rVertex.point.x = pointVal * halfBotLength + botCenter;
+
+		            currentFrame++;
+		            if(currentFrame >= 60*speed) {
+		            	isRotate = false;
+		            	toggle = !toggle;
+		            }
+
+		            
+		            
+	        	}
+	        	//myTriangle.rotate(3, center);
+	        	textOne.point = myTriangle.segments[0].point;
+	        	textTwo.point = myTriangle.segments[1].point;
+	        	textThree.point = myTriangle.segments[2].point;
+	        	
+	        	
+	            
+	        }
+
+	        myTriangle.onClick = function(event) {
+	        	isRotate = !isRotate;
+	        	currentFrame = 0;
+	        }
+
+	        
+
+
+		</script>
+</head>
+	<body>
+		<canvas id="myCanvas" resize></canvas>
+	</body>
+</html>
