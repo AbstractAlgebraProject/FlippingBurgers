@@ -14,7 +14,7 @@
 
 	        function symTri(center, radius) {
 	        	this.myTriangle = new Path();
-	        	this.speed = 1.5;
+	        	this.speed = .2;
 	        	this.center = center;
 	        	this.radius = radius;
 	        	for (i = 0; i < 3; i++) 
@@ -34,8 +34,13 @@
 		        this.textThree.content = "C";
 		        this.textThree.fillColor = 'black';
 		        this.textThree.scale(3);
+
 		 		this.myTriangle.closed = true;
-		        this.myTriangle.fillColor = 'red';
+		        this.myTriangle.fillColor = {gradient: {
+            									stops: ['blue', 'red', 'green']
+											 },
+												origin: this.myTriangle.segments[0].point,
+												destination: this.myTriangle.segments[1].point};
 
 		        this.lVertex = this.myTriangle.segments[2];
 		        this.rVertex = this.myTriangle.segments[1];
@@ -48,16 +53,21 @@
 	       		this.toggle = false;
 	       		this.currentABC = "ABC";
 	       		this.symmetry = {string: "RRFRFRR", current: 0};
-	       		this.setSym = function(sym) {
-	       			this.symmetry = { string: sym, current: 0};
+	       		this.setSym = function(sym, resetCurrent) {
+	       			if(!resetCurrent) {
+	       				this.symmetry.string = sym;
+	       			} else {
+	       				this.symmetry = { string: sym, current: 0};
+	       			}
+	       			
 	       		};
 
 		    	this.setState = function() {
 		    		var c = this.symmetry.current;
-		    		this.symmetry.current++;
+		    		
 		    		if(c < this.symmetry.string.length) {
 		    			var ch = this.symmetry.string.charAt(c);
-
+		    			this.symmetry.current++;
 			    		if(ch === 'R') {
 			    			this.isFlip = false;
 			    			this.isRotate = true;
@@ -123,26 +133,62 @@
 			    			//alert(this.currentABC);
 			    			this.findPointsToFlip();
 			    		}
+			    	} else {
+			    		this.setState();
 			    	}
 
 				    //this.myTriangle.rotate(3, center);
 				    this.textOne.point = this.myTriangle.segments[0].point;
 				    this.textTwo.point = this.myTriangle.segments[1].point;
 				    this.textThree.point = this.myTriangle.segments[2].point;
-
+				    this.myTriangle.fillColor = {gradient: {
+            									stops: ['blue', 'red', 'green']
+											 },
+												origin: this.myTriangle.segments[0].point,
+												destination: this.myTriangle.segments[1].point};
 				    //this.setState();	
 		    	};
 		    }	
 
-	      	var myTri = new symTri(new Point(500, 500), 150);
+	      	var myTri = new symTri(new Point(700, 700), 250);
+	      	//var myTri2 = new symTri(new Point(300, 300), 100);
+	      	myTri.setSym("RFRFRFFFFFFRRRFRFRRRFRFFRFRFFFRFRFFFRF", true)
 	      	myTri.setState();
+	      	//myTri2.setSym('RFR');
+	      	//myTri2.myTriangle.fillColor = 'blue';
+	      	//myTri2.setState();
+
+	      	//var rekt = new Rectangle(new Point(500, 200), new Point(50, 20));
+	      	var rekt = new Rectangle(new Point(500, 200), new Size(150, 50));
+	      	var aButton = new Path.Rectangle(rekt);//add rotate to sym
+	      	aButton.fillColor = 'black';
+	      	var buttonText = new PointText(new Point(700, 170));
+	      	buttonText.content = "R                 F";
+	      	buttonText.fillColor = 'blue';
+	      	buttonText.scale(5);
+	      	var rekt2 = new Rectangle(new Point(800, 200), new Size(150, 50));
+	      	var aButton2 = new Path.Rectangle(rekt2);//add flip to sym
+	      	aButton2.fillColor = 'green';
+	      	aButton.onClick = function(event) {
+	      		myTri.setSym(myTri.symmetry.string + "R", false);
+	      		alert(myTri.symmetry.string);
+	      	}
+
+	      	aButton2.onClick = function(event) {
+	      		myTri.setSym(myTri.symmetry.string + "F", false);
+	      		alert(myTri.symmetry.string);
+	      	}
 	      	//myTri.setSym('RFR');		       	
 			//var myTri2 = new symTri(new Point(600, 600), 50);
-
+			var symText = new PointText(new Point(100, 100));
+			symText.fillColor = 'red';
+			symText.scale(6);
 
 			//myTri.triangle.fillColor = 'blue';	
 	      	function onFrame(event) {
+	      		symText.content = myTri.symmetry.string + "\n" + myTri.symmetry.string.substring(0, myTri.symmetry.current);
 	      		myTri.Update(event);
+	      		//myTri2.Update(event);
 	      	}
     
 		</script>
