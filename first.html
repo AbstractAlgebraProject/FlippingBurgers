@@ -111,7 +111,7 @@
 				        this.rVertex.point.x = pointVal * -this.halfBotLength + this.botCenter;
 
 			            this.currentFrame++;
-			            if(this.currentFrame >= 60*this.speed) {
+			            if(this.currentFrame > 60*this.speed) {
 				           	this.isFlip = false;
 				           	//this.toggle = !this.toggle;
 				           	this.currentFrame = 0;
@@ -150,31 +150,35 @@
 		    	};
 		    }	
 
+		    function sButton(point, size, color, text, func) {
+		    	var rectangle = new Rectangle(point, size);
+		    	this.button = new Path.Rectangle(rectangle);
+		    	this.button.fillColor = color;
+		    	var offset = new Point(0, -100);
+		    	this.text = new PointText(point-offset);
+		    	this.text.content = text;
+		    	this.text.fillColor = color;
+		    	this.text.scale(4);
+		    	var dothis = func;
+		    	this.button.onClick = function(event) {
+		    		dothis(event);
+		    	}
+		    }
 	      	var myTri = new symTri(new Point(700, 700), 250);
-	      	//var myTri2 = new symTri(new Point(300, 300), 100);
-	      	myTri.setSym("RFRFRFFFFFFRRRFRFRRRFRFFRFRFFFRFRFFFRF", true)
+	      	
+	      	myTri.setSym("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF", true)
 	      	myTri.setState();
-	      	//myTri2.setSym('RFR');
-	      	//myTri2.myTriangle.fillColor = 'blue';
-	      	//myTri2.setState();
+	      	
 
-	      	//var rekt = new Rectangle(new Point(500, 200), new Point(50, 20));
-	      	var rekt = new Rectangle(new Point(500, 200), new Size(150, 50));
-	      	var aButton = new Path.Rectangle(rekt);//add rotate to sym
-	      	aButton.fillColor = 'black';
-	      	var buttonText = new PointText(new Point(700, 170));
-	      	buttonText.content = "R                 F";
-	      	buttonText.fillColor = 'blue';
-	      	buttonText.scale(5);
-	      	var rekt2 = new Rectangle(new Point(800, 200), new Size(150, 50));
-	      	var aButton2 = new Path.Rectangle(rekt2);//add flip to sym
-	      	aButton2.fillColor = 'green';
-	      	aButton.onClick = function(event) {
+	      	
+	      	var but1 = new sButton(new Point(800, 200), new Size(150, 50), 'black', 'R', but1f);
+	      	var but2 = new sButton(new Point(600, 200), new Size(150, 50), 'green', 'F', but2f);
+	      	function but1f(event) {
 	      		myTri.setSym(myTri.symmetry.string + "R", false);
 	      		alert(myTri.symmetry.string);
 	      	}
 
-	      	aButton2.onClick = function(event) {
+	      	function but2f(event) {
 	      		myTri.setSym(myTri.symmetry.string + "F", false);
 	      		alert(myTri.symmetry.string);
 	      	}
