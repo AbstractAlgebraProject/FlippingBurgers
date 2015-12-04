@@ -14,7 +14,7 @@
 
 	        function symTri(center, radius) {
 	        	this.myTriangle = new Path();
-	        	this.speed = 1;
+	        	this.speed = .5;
 	        	this.center = center;
 	        	this.radius = radius;
 	        	this.timeBound = true;
@@ -89,7 +89,6 @@
 	        		map['C'] = 2;
 
 	        		this.currentPoints = [map[this.currentABC.charAt(1)], map[this.currentABC.charAt(2)]];
-	        		//alert(this.currentPoints);
 	        		this.lVertex = this.myTriangle.segments[this.currentPoints[0]];
 		        	this.rVertex = this.myTriangle.segments[this.currentPoints[1]];
 		       		this.botCenter = (this.myTriangle.segments[this.currentPoints[0]].point.x + this.myTriangle.segments[this.currentPoints[1]].point.x) / 2;
@@ -109,14 +108,15 @@
 			        		
 				       	    var increment = Math.PI/(60*this.speed); 
 				         	           
-			         	   	var pointVal = Math.cos(increment*this.currentFrame);
+			         	   	var pointVal = increment * Math.sin(increment*this.currentFrame);
 						            
-					        this.lVertex.point.x = pointVal * this.halfBotLength + this.botCenter;
-					        this.rVertex.point.x = pointVal * -this.halfBotLength + this.botCenter;
+					        this.lVertex.point.x += pointVal * this.halfBotLength;
+					        this.rVertex.point.x += pointVal * -this.halfBotLength;
 
 				            this.currentFrame++;
 				            if(this.currentFrame > 60*this.speed) {
 					           	this.isFlip = false;
+
 					           	
 					           	this.currentFrame = 0;
 					           	this.setState();
@@ -196,12 +196,12 @@
 	      	var but2 = new sButton(new Point(525, 800), new Size(150, 50), 'green', 'F', but2f); //create new flip button
 	      	function but1f(event) {
 	      		myTri.setSym(myTri.symmetry.string + "R", false);
-	      		alert(myTri.symmetry.string);
+	      		//alert(myTri.symmetry.string);
 	      	}
 
 	      	function but2f(event) {
 	      		myTri.setSym(myTri.symmetry.string + "F", false);
-	      		alert(myTri.symmetry.string);
+	      		//alert(myTri.symmetry.string);
 	      	}
 	      	
 			var symText = new PointText(new Point(100, 100));
