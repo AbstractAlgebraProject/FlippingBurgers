@@ -119,15 +119,14 @@
 			        		
 				       	    var increment = Math.PI/(60*this.speed); 
 				         	           
-			         	   	var pointVal = increment * Math.sin(increment*this.currentFrame);
+			         	   	var pointVal = -Math.cos(increment*this.currentFrame);
 						            
-					        this.lVertex.point.x += pointVal * this.halfBotLength;
-					        this.rVertex.point.x += pointVal * -this.halfBotLength;
+					        this.lVertex.point.x = pointVal * this.halfBotLength + this.botCenter;
+					        this.rVertex.point.x = pointVal * -this.halfBotLength + this.botCenter;
 
 				            this.currentFrame++;
 				            if(this.currentFrame > 60*this.speed) {
 					           	this.isFlip = false;
-
 					           	
 					           	this.currentFrame = 0;
 					           	this.setState();
