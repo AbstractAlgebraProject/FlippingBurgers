@@ -37,6 +37,32 @@
 		        this.textThree.content = "C";
 		        this.textThree.fillColor = 'black';
 		        this.textThree.scale(3);
+				this.letterSpace = 30;
+				
+				this.setLetterPositions = function()
+				{
+					
+					
+					
+					var tmpletterPos = [];
+					
+					//alert (tmpletterPos[0].x);
+					for (i = 0; i < 3; i++)
+					{
+						var distVecx = this.myTriangle.segments[i].point.x - this.center.x;
+						var distVecy = this.myTriangle.segments[i].point.y - this.center.y;
+						var distMag = Math.sqrt(distVecx * distVecx + distVecy * distVecy);
+						var scaleFac = (distMag + this.letterSpace) / (distMag);
+						var nvecx = distVecx * scaleFac;
+						var nvecy = distVecy * scaleFac;
+						
+						tmpletterPos.push(new Point((nvecx + this.center.x), nvecy + this.center.y));	    
+					}
+					this.textOne.point = tmpletterPos[0];
+					
+					this.textTwo.point = tmpletterPos[1];
+				    this.textThree.point = tmpletterPos[2];
+				}	
 
 		        //setting basic parameters for the triangle
 		 		this.myTriangle.closed = true;
@@ -160,9 +186,7 @@
 
 				    
 				    //updating position of text for vertex lettering
-				    this.textOne.point = this.myTriangle.segments[0].point;
-				    this.textTwo.point = this.myTriangle.segments[1].point;
-				    this.textThree.point = this.myTriangle.segments[2].point;
+				    this.setLetterPositions();
 
 				    //resetting triangle colors to persist over transformations
 				    this.myTriangle.fillColor = {gradient: {
