@@ -73,7 +73,7 @@
 	       		//sets the next symmetry to rotation of flip by manipulating general status params
 		    	this.setState = function() {
 		    		var c = this.symmetry.current;
-		    		
+		    		//alert(this.symmetry.string);
 		    		if(c < this.symmetry.string.length) {			//make sure we havn't reached the end of the symm string
 		    			var ch = this.symmetry.string.charAt(c);	//find the char at the current spot
 		    			this.symmetry.current++;	
@@ -107,10 +107,25 @@
 
 	        	//non time-bound flip and rotate functions
 	        	this.rotate = function() {
-	        		this.myTriangle.rotate(120);
+	        		
+	        		this.myTriangle.rotate(120, this.center);
+	        		this.isRotate = false;
+				    
+				    this.currentABC = this.currentABC.charAt(2) + this.currentABC.charAt(0) + this.currentABC.charAt(1);
+				    			
+				    this.findPointsToFlip();
 	        	}
-	        	this.flip = function() {	
-	        		this.findPointsToFlip(); //incomplete
+	        	this.flip = function() {
+	        		var tmp = this.lVertex;
+	        		this.lVertex = this.rVertex;
+	        		this.rVertex = tmp;
+	        		this.isFlip = false;
+					           	
+					this.currentFrame = 0;
+
+					this.currentABC = this.currentABC.charAt(0) + this.currentABC.charAt(2) + this.currentABC.charAt(1);
+					           	
+					this.findPointsToFlip();
 	        	}
 
 	        	this.Update = function(event) {
@@ -144,21 +159,27 @@
 				    			this.currentFrame = 0;
 				    			this.setState();
 				    			this.currentABC = this.currentABC.charAt(2) + this.currentABC.charAt(0) + this.currentABC.charAt(1);
-				    			//alert(this.currentABC);
+				    			
 				    			this.findPointsToFlip();
 				    		}
 				    	} else {
 				    		this.setState();
 				    	}
 				    } else {	//non time-bound manipulation
-				    	if(this.isFlip) {
-				    		this.flip();
-				    	} else if (this.isRotate) {
-				    		this.rotate();
+				    	var lastABC = "";
+				    	while(lastABC != this.currentABC)
+				    	{
+				    		lastABC = this.currentABC;
+				    		if(this.isFlip) {
+					    		this.flip();
+					    	} else if (this.isRotate) {
+					    		this.rotate();
+					    	}
 				    	}
+				    	this.setState();
+
 				    }
 
-				    
 				    //updating position of text for vertex lettering
 				    this.textOne.point = this.myTriangle.segments[0].point;
 				    this.textTwo.point = this.myTriangle.segments[1].point;
@@ -170,7 +191,7 @@
 											 },
 												origin: this.myTriangle.segments[0].point,
 												destination: this.myTriangle.segments[1].point};
-				    //this.setState();	
+				    
 		    	};
 		    }
 
@@ -244,6 +265,7 @@
 
 	      		//updates the time-bound triangle
 	      		myTri.Update(event);
+	      		myTri2.Update(event);
 	      		
 	      	}
     
