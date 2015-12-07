@@ -117,6 +117,10 @@
 
 	        	this.currentPoints = [1,2];
 	        	//calculated the indexing for various points based on the rotation
+				
+				
+				
+				
 	        	this.findPointsToFlip = function() {
 	        		var map = {};
 	        		map['A'] = 0;
@@ -131,6 +135,10 @@
 		        	this.halfBotLength = this.botCenter - this.myTriangle.segments[this.currentPoints[0]].point.x;
 	        	};
 
+				
+				
+				
+				
 	        	//non time-bound flip and rotate functions
 	        	this.rotate = function() {
 	        		
@@ -142,16 +150,17 @@
 				    this.findPointsToFlip();
 	        	}
 	        	this.flip = function() {
+					
+					this.findPointsToFlip();
+					
 	        		var tmp = this.lVertex;
-	        		this.lVertex = this.rVertex;
-	        		this.rVertex = tmp;
+                    this.myTriangle.segments[this.currentPoints[0]] = this.rVertex;
+                    this.myTriangle.segments[this.currentPoints[1]] = tmp;
 	        		this.isFlip = false;
 					           	
 					this.currentFrame = 0;
 
 					this.currentABC = this.currentABC.charAt(0) + this.currentABC.charAt(2) + this.currentABC.charAt(1);
-					           	
-					this.findPointsToFlip();
 	        	}
 
 	        	this.Update = function(event) {
@@ -246,7 +255,7 @@
 	      	myTri.setState();		//sets initial state
 	      	
 	      	var myTri2 = new symTri(new Point(1100, 400), 250);	//second triangle 
-	      	myTri2.setSym("F");			//starts flipped
+	      	myTri2.setSym("FRFRFRRFFRRFF", true);			//starts flipped
 	      	myTri2.timeBound = false;	//set to not be time-bound default=true
 	      	myTri2.setState();			//sets initial state
 
@@ -270,7 +279,7 @@
 
 			var fpsText = new PointText(new Point(1400, 50));	
 			fpsText.fillColor = 'red';
-			fpsText.content = '0';
+			fpsText.content = '';
 			fpsText.scale(5);
 
 			var lastLoop = new Date;	//fps calculation time 
