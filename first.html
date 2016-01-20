@@ -27,17 +27,22 @@
 	        	//create text for vertex lettering
 	        	this.textOne = new PointText(this.myTriangle.segments[0].point);
 	        	this.textOne.content = "A";
-		        this.textOne.fillColor = 'blue';
+		        this.textOne.fillColor = new Color(.453, .105, .277) ;
 		        this.textOne.scale(3);
+				//this.textOne.point = new Point(this.textOne.point.x - this.textOne.bound.width / 2, this.textOne.point.y + this.textOne.bound.height / 2);
+				
 		        this.textTwo = new PointText(this.myTriangle.segments[1].point);
 		        this.textTwo.content = "B";
-		        this.textTwo.fillColor = 'green';
+		        this.textTwo.fillColor = new Color(.453, .105, .277);
 		    	this.textTwo.scale(3);
+				//this.textTwo.point = new Point(this.textTwo.point.x - this.textTwo.bound.width / 2, this.textTwo.point.y + this.textTwo.bound.height / 2);
+				
 		        this.textThree = new PointText(this.myTriangle.segments[2].point);
 		        this.textThree.content = "C";
-		        this.textThree.fillColor = 'black';
+		        this.textThree.fillColor = new Color(.453, .105, .277);
 		        this.textThree.scale(3);
 				this.letterSpace = 30;
+				//this.textThree.point = new Point(this.textThree.point.x - this.textThree.bound.width / 2, this.textThree.point.y + this.textThree.bound.height / 2);
 				
 				this.setLetterPositions = function()
 				{
@@ -59,18 +64,18 @@
 						tmpletterPos.push(new Point((nvecx + this.center.x), nvecy + this.center.y));	    
 					}
 					this.textOne.point = tmpletterPos[0];
+					//this.textOne.point = new Point(this.textOne.point.x - this.textOne.bound.width / 2, this.textOne.point.y + this.textOne.bound.height / 2);
 					
 					this.textTwo.point = tmpletterPos[1];
+					//this.textTwo.point = new Point(this.textTwo.point.x - this.textTwo.bound.width / 2, this.textTwo.point.y + this.textTwo.bound.height / 2);
+					
 				    this.textThree.point = tmpletterPos[2];
+					//this.textThree.point = new Point(this.textThree.point.x - this.textThree.bound.width / 2, this.textThree.point.y + this.textThree.bound.height / 2);
 				}	
 
 		        //setting basic parameters for the triangle
 		 		this.myTriangle.closed = true;
-		        this.myTriangle.fillColor = {gradient: {
-            									stops: ['blue', 'red', 'green']
-											 },
-												origin: this.myTriangle.segments[0].point,
-												destination: this.myTriangle.segments[1].point};
+		        this.myTriangle.fillColor = new Color(.066, .332, .797);
 
 				//setting basic parameters used for calculation of flips and rotations
 		        this.lVertex = this.myTriangle.segments[2];
@@ -219,11 +224,7 @@
 				    this.setLetterPositions();
 
 				    //resetting triangle colors to persist over transformations
-				    this.myTriangle.fillColor = {gradient: {
-            									stops: ['blue', 'red', 'green']
-											 },
-												origin: this.myTriangle.segments[0].point,
-												destination: this.myTriangle.segments[1].point};
+				    this.myTriangle.fillColor = new Color(.066, .332, .797);
 				    
 		    	};
 		    }
@@ -236,12 +237,13 @@
 		    	return text;
 		    }
 		    
-		    function sButton(point, size, color, text, func) { //class constructor for a clickable button
+		    function sButton(point, size, colorBut, colorTex, text, func) { //class constructor for a clickable button
 		    	var rectangle = new Rectangle(point, size);
 		    	this.button = new Path.Rectangle(rectangle);
-		    	this.button.fillColor = color;
-		    	var offset = new Point(-50, -100);
-		    	this.text = new pText(point-offset, text, color, 4);
+		    	this.button.fillColor = colorBut;
+
+		    	var offset = new Point(0,0);
+		    	this.text = new pText(point-offset, text, colorTex, 4);
 		    	
 		    	var dothis = func;
 		    	this.button.onClick = function(event) {
@@ -260,8 +262,8 @@
 	      	myTri2.setState();			//sets initial state
 
 	      	
-	      	var but1 = new sButton(new Point(325, 800), new Size(150, 50), 'black', 'R', but1f); //create new rotate button
-	      	var but2 = new sButton(new Point(525, 800), new Size(150, 50), 'green', 'F', but2f); //create new flip button
+	      	var but1 = new sButton(new Point(325, 800), new Size(150, 50), new Color(1.000, .598, 0), new Color(.453, .105, .277), 'R', but1f); //create new rotate button
+	      	var but2 = new sButton(new Point(525, 800), new Size(150, 50), new Color(1.000, .598, 0), new Color(.453, .105, .277), 'F', but2f); //create new flip button
 
 	      	function but1f(event) {	//function for rotation button press
 	      		myTri.setSym(myTri.symmetry.string + "R", false);	//appends "R" to the symmetry string
@@ -273,14 +275,14 @@
 	      		//alert(myTri.symmetry.string);
 	      	}
 	      	
-			var symText = new PointText(new Point(100, 100));	//text to display current symmstring
+			/*var symText = new PointText(new Point(100, 100));	//text to display current symmstring
 			symText.fillColor = 'red';
-			symText.scale(6);
+			symText.scale(6);*/
 
-			var fpsText = new PointText(new Point(1400, 50));	
+			/*var fpsText = new PointText(new Point(1400, 50));	
 			fpsText.fillColor = 'red';
 			fpsText.content = '';
-			fpsText.scale(5);
+			fpsText.scale(5);*/
 
 			var lastLoop = new Date;	//fps calculation time 
 
@@ -291,10 +293,10 @@
 	      		lastLoop = thisLoop;
 
 	      		//updates fpsstring
-	      		fpsText.content = fps;
+	      		//fpsText.content = fps;
 
 	      		//sets symmtext to be both the current and desired symmetry
-	      		symText.content = myTri.symmetry.string + "\n" + myTri.symmetry.string.substring(0, myTri.symmetry.current); 
+	      		//symText.content = myTri.symmetry.string + "\n" + myTri.symmetry.string.substring(0, myTri.symmetry.current); 
 
 	      		//updates the time-bound triangle
 	      		myTri.Update(event);
